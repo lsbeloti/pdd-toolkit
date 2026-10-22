@@ -31,9 +31,7 @@ O programa tem três abas:
 | **Inverse** | Kermas (Hopfield/Fourier), coeficientes, modelo generalizado (A, τ, β) e reconstrução de PDD avançada ou simples. |
 | **Comparison** | Curvas de referência (de arquivo ou digitadas), comparação e erro em relação à referência. |
 
-> **Aviso.** Este software é destinado a pesquisa e ensino. Não é um dispositivo médico
-> certificado e não deve ser usado para decisões clínicas sem validação independente e o
-> controle de qualidade da sua instituição.
+> **Aviso.** Este software é destinado a pesquisa.
 
 > **Este repositório não inclui dados de exemplo.** As curvas vêm do seu próprio arquivo; o
 > formato está descrito em [Formato dos dados de entrada](#formato-dos-dados-de-entrada).
