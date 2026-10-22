@@ -1,0 +1,29 @@
+# --- ambientes virtuais e artefatos de build ---
+.venv/
+venv/
+build/
+dist/
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.spec.bak
+
+# --- saidas geradas pelo programa ---
+output_direto/
+output_indireto/
+~/PDD_Toolkit/
+
+
+# --- lixo de sistema/editor ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# --- dados de laboratorio: nunca versionar (o repo nao traz dados) ---
+*.csv
+*.xlsx
+*.xls
+*.xlsm
+independent/

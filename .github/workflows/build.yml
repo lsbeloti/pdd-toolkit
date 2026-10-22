@@ -1,0 +1,104 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Bibliotecas de sistema necessarias para importar PyQt5 em runner headless.
+  QT_APT: >-
+    libgl1 libegl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4
+    libxcb-keysyms1 libxcb-shape0 libxcb-xinerama0 libdbus-1-3
+
+jobs:
+  test:
+    name: autoteste (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Guard - no data files tracked
+        shell: bash
+        run: |
+          if git ls-files | grep -iE '\.(csv|xlsx|xls|xlsm)$'; then
+            echo "::error::Data/spreadsheet files must not be tracked in this repository."
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Dependencias de sistema (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y $QT_APT
+
+      - name: Instalar dependencias Python
+        run: pip install -r requirements.txt
+
+      - name: Autoteste (imports, CSV sintetico, matplotlib, openpyxl)
+        run: python main_pyqt.py --selftest
+
+  release:
+    name: release (${{ matrix.os }})
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            asset: pdd-toolkit-linux-x86_64.tar.gz
+          - os: windows-latest
+            asset: pdd-toolkit-windows-x86_64.zip
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Dependencias de sistema (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y $QT_APT
+
+      - name: Instalar dependencias Python
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Autoteste
+        run: python main_pyqt.py --selftest
+
+      - name: Compilar (PyInstaller onedir)
+        run: pyinstaller --noconfirm --clean pdd_toolkit.spec
+
+      - name: Empacotar (Linux)
+        if: runner.os == 'Linux'
+        run: tar -czf "${{ matrix.asset }}" -C dist PDD_Toolkit
+
+      - name: Empacotar (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path dist/PDD_Toolkit -DestinationPath "${{ matrix.asset }}"
+
+      - name: Publicar no release da tag
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ matrix.asset }}
+          fail_on_unmatched_files: true
