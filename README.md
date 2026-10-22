@@ -57,7 +57,7 @@ o comando `pdd-toolkit` em `~/.local/bin` e adiciona um atalho ao menu de aplica
 do download, não são necessários Python nem conexão com a internet.
 
 Se preferir inspecionar antes de executar, baixe o [`install.sh`](install.sh), leia e rode
-localmente — ou baixe `pdd-toolkit-linux-x86_64.tar.gz` diretamente na página de
+localmente, ou baixe `pdd-toolkit-linux-x86_64.tar.gz` diretamente na página de
 [Releases](https://github.com/lsbeloti/pdd-toolkit/releases) e extraia onde quiser.
 
 Requisitos: Linux x86_64 com glibc 2.35 ou mais nova (Ubuntu 22.04 ou posterior, ou
@@ -107,7 +107,7 @@ cabeçalho identifica o parâmetro daquela curva:
 | `6MV`, `10MeV` | energia (MV) |
 
 - Separador de campos `;` com decimal `,` ou `.` funciona. Separador `,` só funciona com
-  decimal `.` — nunca use `,` nos dois papéis, o arquivo não é lido corretamente.
+  decimal `.`, nunca use `,` nos dois papéis, o arquivo não é lido corretamente.
 - Valores relativos (%) ou absolutos (cGy) são aceitos: o ajuste normaliza cada curva pelo seu
   máximo e informa o fator de escala.
 - A entrada é apenas CSV; as tabelas geradas pelo programa é que são gravadas em CSV e em um
@@ -202,10 +202,10 @@ pdd_toolkit.spec                    configuração do PyInstaller
 
 Abra uma [issue](https://github.com/lsbeloti/pdd-toolkit/issues) descrevendo o que aconteceu,
 a versão usada e o sistema operacional. **Não anexe dados de pacientes nem dados
-institucionais** — se precisar reproduzir um problema, use uma curva sintética.
+institucionais**, se precisar reproduzir um problema, use uma curva sintética.
 
 ## Licença
 
-MIT — veja [LICENSE](LICENSE). Em resumo: qualquer pessoa pode usar, copiar, modificar e
+MIT: veja [LICENSE](LICENSE). Em resumo: qualquer pessoa pode usar, copiar, modificar e
 redistribuir o programa, desde que mantenha o aviso de copyright; o software é fornecido sem
 garantias.
